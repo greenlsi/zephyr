@@ -3,42 +3,20 @@
 # Copyright (c) 2024 Microchip Technology Inc
 # SPDX-License-Identifier: Apache-2.0
 
-choice
-	prompt "Microchip Polarfire SOC implementation"
-	depends on SOC_SERIES_PIC64GX
+config SOC_SERIES_PIC64GX
+	bool
+	select SOC_FAMILY_MICROCHIP_MIV
+	help
+	  Microchip RV64 implementation
 
 config SOC_PIC64GX
-	bool "Microchip PIC64GX system implementation"
-	select ATOMIC_OPERATIONS_BUILTIN
-	select RISCV_GP
-	select USE_SWITCH_SUPPORTED
-	select USE_SWITCH
-	select CPU_HAS_FPU
-	select SCHED_IPI_SUPPORTED
-	select RISCV_ISA_RV64I
-	select RISCV_ISA_EXT_M
-	select RISCV_ISA_EXT_A
-	select RISCV_ISA_EXT_C
-	select RISCV_ISA_EXT_ZICSR
-	select RISCV_ISA_EXT_ZIFENCEI
-
-endchoice
-
-config PIC64GX_RSC_TABLE
-	bool "Add a section for resource table"
+	bool
+	select SOC_SERIES_PIC64GX
 	help
-	  This do the same things than OPENAMP_RSC_TABLE except it doesn't
-	  declare a resource table and left that for the user to do
+	  Microchip PIC64GX system implementation
 
-# Workaround for not being able to have commas in macro arguments
-DT_CHOSEN_Z_RSCTABLE_MEM := zephyr,rsctable-mem
+config SOC_SERIES
+	default "pic64gx" if SOC_SERIES_PIC64GX
 
-config DT_HAS_CHOSEN_Z_RSCTABLE_MEM_ENABLED
-        def_bool $(dt_chosen_enabled,$(DT_CHOSEN_Z_RSCTABLE_MEM))
-
-config PIC64GX_RELOCATE_RESOURCE_TABLE
-	bool "Relocate resource table"
-	depends on (OPENAMP_RSC_TABLE || PIC64GX_RSC_TABLE) && DT_HAS_CHOSEN_Z_RSCTABLE_MEM_ENABLED
-	help
-          Copy resource table into a specific memory selected with the chosen node
-          zephyr,rsctable-mem
+config SOC
+	default "pic64gx" if SOC_PIC64GX

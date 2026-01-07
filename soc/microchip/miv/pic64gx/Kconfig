@@ -1,0 +1,47 @@
+# RISCV64_MIV Microchip PIC64GX SOC configuration options
+
+# Copyright (c) 2024 Microchip Technology Inc
+# SPDX-License-Identifier: Apache-2.0
+
+config SOC_SERIES_PIC64GX
+	select RISCV
+	select RISCV_PRIVILEGED
+	select RISCV_HAS_PLIC
+	select RISCV_SOC_HAS_GP_RELATIVE_ADDRESSING
+	imply XIP
+
+config SOC_PIC64GX
+	select 64BIT
+	select SCHED_IPI_SUPPORTED
+	select USE_SWITCH_SUPPORTED
+	select USE_SWITCH
+	select ATOMIC_OPERATIONS_BUILTIN
+	select CPU_HAS_FPU
+	select CPU_HAS_FPU_DOUBLE_PRECISION
+	select RISCV_ISA_RV64I
+	select RISCV_ISA_EXT_M
+	select RISCV_ISA_EXT_A
+	select RISCV_ISA_EXT_C
+	select RISCV_ISA_EXT_ZICSR
+	select RISCV_ISA_EXT_ZIFENCEI
+
+# TODO is this the right place?
+
+config PIC64GX_RSC_TABLE
+	bool "Add a section for resource table"
+	help
+	  This do the same things than OPENAMP_RSC_TABLE except it doesn't
+	  declare a resource table and left that for the user to do
+
+# Workaround for not being able to have commas in macro arguments
+DT_CHOSEN_Z_RSCTABLE_MEM := zephyr,rsctable-mem
+
+config DT_HAS_CHOSEN_Z_RSCTABLE_MEM_ENABLED
+        def_bool $(dt_chosen_enabled,$(DT_CHOSEN_Z_RSCTABLE_MEM))
+
+config PIC64GX_RELOCATE_RESOURCE_TABLE
+	bool "Relocate resource table"
+	depends on (OPENAMP_RSC_TABLE || PIC64GX_RSC_TABLE) && DT_HAS_CHOSEN_Z_RSCTABLE_MEM_ENABLED
+	help
+          Copy resource table into a specific memory selected with the chosen node
+          zephyr,rsctable-mem

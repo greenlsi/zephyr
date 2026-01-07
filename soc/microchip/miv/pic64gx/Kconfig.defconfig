@@ -3,16 +3,10 @@
 
 if SOC_SERIES_PIC64GX
 
-config SOC_SERIES
-	default "pic64gx"
-
 config SYS_CLOCK_HW_CYCLES_PER_SEC
 	default 1000000
 
 config RISCV_SOC_INTERRUPT_INIT
-	default y
-
-config RISCV_GP
 	default y
 
 config 2ND_LVL_ISR_TBL_OFFSET
