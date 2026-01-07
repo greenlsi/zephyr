@@ -1,5 +1,5 @@
 # Copyright (c) 2024 Microchip Technology Inc
 # SPDX-License-Identifier: Apache-2.0
 
-config IPM_MCHP_IHC
-	default IPM
+config BOARD_PIC64GX_CURIOSITY_KIT
+	select SOC_PIC64GX
