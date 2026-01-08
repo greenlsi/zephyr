@@ -1,0 +1,7 @@
+family:
+  - name: microchip_miv
+    series:
+      - name: pic64gx
+        socs:
+          - name: pic64gx
+

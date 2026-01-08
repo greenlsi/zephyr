@@ -238,7 +238,7 @@
 			gpio-controller;
 			#gpio-cells = <2>;
 			ngpios = <32>;
-			status = "disabled";
+			status = "okay";
 		};
 
 		gpio1: gpio@20121000 {
